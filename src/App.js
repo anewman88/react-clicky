@@ -12,6 +12,7 @@ class App extends Component {
   state = {
     card,
     clickedCard: [],
+    topscore: 0,
     score: 0
   };
 
@@ -24,10 +25,9 @@ class App extends Component {
 //if you click on a card that has already been selected, the game is reset and cards reordered
     if (CardAlreadyClicked) {
       this.setState({
-        card: this.state.card.sort(function(a, b) {
-          return 0.5 - Math.random();
-        }),
+        card: this.state.card.sort(function(a, b) {return 0.5 - Math.random();}),
         clickedCard: [],
+        topscore: (this.state.score > this.state.topscore ? this.state.score : this.state.topscore),
         score: 0
       });
         alert("You lose. Play again?");
@@ -40,17 +40,17 @@ class App extends Component {
             return 0.5 - Math.random();
           }),
           clickedCard: this.state.clickedCard.concat(currentCard),
-          score: this.state.score + 1
+          score: this.state.score + 1,
+          // topscore: (this.state.score > this.state.topscore ? this.state.score : this.state.topscore),
         },
         //if all 12 cards are clicked, display a congrats message and the game resets        
         () => {
           if (this.state.score === 12) {
             alert("Yay! You Win!");
-            this.setState({
-              card: this.state.card.sort(function(a, b) {
-                return 0.5 - Math.random();
-              }),
+            this.setState({ 
+              card: this.state.card.sort(function(a, b) {return 0.5 - Math.random();}),
               clickedCard: [],
+              topscore: (this.state.score > this.state.topscore ? this.state.score : this.state.topScore),
               score: 0
             });
           }
@@ -63,9 +63,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Header 
-          score={this.state.score}
-        />
+        <Header score={this.state.score} topscore={this.state.topscore}/>
         <Jumbotron />
         <div className="wrapper">
           {this.state.card.map(card => (
